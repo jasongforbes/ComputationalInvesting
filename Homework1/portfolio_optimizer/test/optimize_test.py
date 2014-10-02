@@ -16,10 +16,10 @@ class Test(unittest.TestCase):
         symbols    = ['AAPL', 'GLD', 'GOOG', 'XOM']
         allocations= [0.4, 0.4, 0.0, 0.2]
         vol, daily_ret, sharpe, cum_ret = optimize.simulate(start_date, end_date, symbols, allocations)
-        self.assertAlmostEqual(sharpe,       1.02828403099,     7, "Sharpe ratio not equal")
-        self.assertAlmostEqual(vol,          0.0101467067654,   7, "Std. deviation not equal")
-        self.assertAlmostEqual(daily_ret,    0.000657261102001, 7, "Daily return not equal")
-        self.assertAlmostEqual(cum_ret,      1.16487261965,     7, "Cum return not equal")
+        self.assertAlmostEqual(sharpe,       1.02828403099,     7, "Sharpe ratio %f != %f "   % (sharpe, 1.02828403099))
+        self.assertAlmostEqual(vol,          0.0101467067654,   7, "Std. deviation %f != %f " % (vol, 0.0101467067654))
+        self.assertAlmostEqual(daily_ret,    0.000657261102001, 7, "Daily return %f != %f "   % (daily_ret, 0.000657261102001))
+        self.assertAlmostEqual(cum_ret,      1.16487261965,     7, "Cum return %f != %f "     % (cum_ret, 1.16487261965))
 
 
 if __name__ == "__main__":
