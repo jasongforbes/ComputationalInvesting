@@ -41,4 +41,3 @@ class PortfolioSimulation:
         return(stddev, avg_daily_ret, sharpe_ratio, cum_ret[len(cum_ret)-1])
         
         
-        
