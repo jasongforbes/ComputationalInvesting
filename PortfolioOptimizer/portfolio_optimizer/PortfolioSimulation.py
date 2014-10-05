@@ -10,7 +10,6 @@ import matplotlib.pyplot as plot
 
 import qstkutil.DataAccess as dataaccess
 import qstkutil.qsdateutil as dateutil
-from numpy import inf
 
 class PortfolioSimulation:
     '''
