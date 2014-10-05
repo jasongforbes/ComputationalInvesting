@@ -10,6 +10,7 @@ import matplotlib.pyplot as plot
 
 import qstkutil.DataAccess as dataaccess
 import qstkutil.qsdateutil as dateutil
+from numpy import inf
 
 class PortfolioSimulation:
     '''
@@ -50,6 +51,15 @@ class PortfolioSimulation:
         if len(self.symbols) != len(allocations):
             raise Exception("Length of symb_list and allocations must be equal") 
         return numpy.dot(self.normalized_close,allocations)
+    
+    def opt_objective(self,allocations):
+        if len(self.symbols) != len(allocations):
+            raise Exception("Length of symb_list and allocations must be equal") 
+        (vol, daily_ret, sharpe, cum) = self.simulate(allocations)
+        return -sharpe
+      
+    def opt_legal_input_constraint(self, allocations):
+        return numpy.sum(allocations) - 1  
     
     def plot_daily_returns(self,allocations,benchmarks):
         daily_earnings= self.get_daily_earnings(allocations)
