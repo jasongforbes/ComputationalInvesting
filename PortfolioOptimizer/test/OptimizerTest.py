@@ -22,10 +22,14 @@ class Test(unittest.TestCase):
                                [0.0, 0.0, 0.0, 1.0]]
 
     def testBruteOptimizer(self):
+        print "Brute Optimization Test"
+        print "----------------------"
         for index in range(0,len(self.portfolios)):
             self.ValidateOptimization(BruteOptimizer(self.portfolios[index],0.1), self.brute_results[index], self.portfolios[index])
         
     def testSharpeOptimizer(self):
+        print "Sharpe Optimization Test"
+        print "----------------------"
         for index in range(0,len(self.portfolios)):
             self.ValidateOptimization(SharpeOptimizer(self.portfolios[index]), self.sharpe_results[index], self.portfolios[index])       
 
