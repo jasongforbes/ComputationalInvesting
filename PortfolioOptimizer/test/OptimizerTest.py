@@ -3,6 +3,7 @@ Created on Oct 4, 2014
 
 @author: Jason
 '''
+import scs
 import datetime
 import time
 import unittest
@@ -21,6 +22,10 @@ class Test(unittest.TestCase):
                                [0.0, 0.0, 0.1, 0.9]]
         self.sharpe_results = [[0.42, 0.40, 0.0, 0.18],
                                [0.0, 0.0, 0.07, 0.93]]
+        
+        
+    def tearDown(self):
+        unittest.TestCase.tearDown(self)
 
     def testBruteOptimizer(self):
         print "Brute Optimization Test"
