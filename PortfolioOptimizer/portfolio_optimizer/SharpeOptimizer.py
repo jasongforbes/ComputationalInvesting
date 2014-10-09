@@ -5,9 +5,8 @@ Created on Oct 5, 2014
 '''
 from Optimizer             import Optimizer
 from PortfolioSimulation   import PortfolioSimulation
-import scipy.optimize as opt
 import numpy
-from numpy import inf, nan
+import cvxpy as cvx
 
 class SharpeOptimizer(Optimizer):
     '''
@@ -20,15 +19,23 @@ class SharpeOptimizer(Optimizer):
         self.portfolio = PortfolioSimulation
     
     def optimize(self):
-        initial_guess = numpy.zeros(len(self.portfolio.symbols))
-        initial_guess[0] = 1
-        allocation_bounds = numpy.array([[0,1]]*len(self.portfolio.symbols),dtype=float)
-        results = opt.minimize(self.portfolio.opt_objective, initial_guess,
-                                        bounds=allocation_bounds,
-                                        method="SLSQP",
-                                        constraints=[{'type':'eq',   'fun': self.portfolio.opt_legal_input_constraint}])
-        if results.success:
-            (vol, daily_ret, sharpe_ratio, cum_ret) = self.portfolio.simulate(results.x)
-            return (results.x, sharpe_ratio)
+        n = len(self.portfolio.symbols)
+        x = cvx.Variable(n)
+        t = cvx.Variable(1)
+        
+        objective = cvx.Maximize(x.T * self.portfolio.avg_returns)
+        constraints = [cvx.quad_form(x,self.portfolio.cov_returns) <= 1,
+                       cvx.sum_entries(x) == t,
+                       x <= t,
+                       x.T * self.portfolio.avg_returns >= 0,
+                       x >= 0,
+                       t >= 0]
+        problem = cvx.Problem(objective,constraints)               
+        
+        problem.solve(solver=cvx.CVXOPT)     
+        if problem.status == cvx.OPTIMAL:
+            allocation = numpy.squeeze(numpy.asarray(x.value/t.value))
+            (vol, daily_ret, sharpe_ratio, cum_ret) = self.portfolio.simulate(allocation)
+            return (allocation, sharpe_ratio)
         else:
-            return (results.x, nan)
+            return (numpy.zeros(n), numpy.nan)
