@@ -7,17 +7,16 @@ import scs
 import datetime
 import time
 import unittest
-import numpy
-from numpy               import testing
-from PortfolioSimulation import PortfolioSimulation
-from BruteOptimizer      import BruteOptimizer
-from SharpeOptimizer     import SharpeOptimizer
+from numpy     import testing
+from optimizer import PortfolioSimulation as ps
+from optimizer import BruteOptimizer as brute
+from optimizer import SharpeOptimizer as sharpe
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.portfolios = [PortfolioSimulation(['AAPL', 'GLD', 'GOOG', 'XOM'],datetime.date(2011,1,1),datetime.date(2011,12,31)),
-                           PortfolioSimulation(['AXP', 'HPQ', 'IBM', 'HNZ'], datetime.date(2010,1,1), datetime.date(2010,12,30))]
+        self.portfolios = [ps.PortfolioSimulation(['AAPL', 'GLD', 'GOOG', 'XOM'],datetime.date(2011,1,1),datetime.date(2011,12,31)),
+                           ps.PortfolioSimulation(['AXP', 'HPQ', 'IBM', 'HNZ'], datetime.date(2010,1,1), datetime.date(2010,12,30))]
         self.brute_results  = [[0.4, 0.4, 0.0, 0.2],
                                [0.0, 0.0, 0.1, 0.9]]
         self.sharpe_results = [[0.42, 0.40, 0.0, 0.18],
@@ -31,13 +30,13 @@ class Test(unittest.TestCase):
         print "Brute Optimization Test"
         print "----------------------"
         for index in range(0,len(self.portfolios)):
-            self.ValidateOptimization(BruteOptimizer(self.portfolios[index],0.1), self.brute_results[index], self.portfolios[index])
+            self.ValidateOptimization(brute.BruteOptimizer(self.portfolios[index],0.1), self.brute_results[index], self.portfolios[index])
         
     def testSharpeOptimizer(self):
         print "Sharpe Optimization Test"
         print "----------------------"
         for index in range(0,len(self.portfolios)):
-            self.ValidateOptimization(SharpeOptimizer(self.portfolios[index]), self.sharpe_results[index], self.portfolios[index])       
+            self.ValidateOptimization(sharpe.SharpeOptimizer(self.portfolios[index]), self.sharpe_results[index], self.portfolios[index])       
 
         
     def ValidateOptimization(self, optimizer, exp_allocations, portfolio):

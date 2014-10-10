@@ -5,7 +5,7 @@ Created on Oct 2, 2014
 '''
 import unittest
 import datetime
-import PortfolioSimulation as ps
+from optimizer import PortfolioSimulation as ps
 
 class Test(unittest.TestCase):
 

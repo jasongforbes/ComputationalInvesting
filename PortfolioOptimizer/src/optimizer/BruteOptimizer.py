@@ -3,25 +3,25 @@ Created on Oct 4, 2014
 
 @author: Jason
 '''
-import Optimizer
-from PortfolioSimulation   import PortfolioSimulation
+from Optimizer import Optimizer as optimizer_base
+import PortfolioSimulation as ps
 from sklearn.utils.extmath import cartesian
 import numpy
 
 
-class BruteOptimizer(Optimizer):
+class BruteOptimizer(optimizer_base):
     '''
     classdocs
     '''
 
 
-    def __init__(self, PortfolioSimulation, allocation_step_size):
+    def __init__(self, portfolio, allocation_step_size):
         '''
         Constructor
         '''
         if allocation_step_size < 0 or allocation_step_size > 1:
             raise Exception("allocation_step_size must be between 0 and 1")
-        self.portfolio = PortfolioSimulation
+        self.portfolio = portfolio
         self.stepsize = allocation_step_size
     
     def optimize(self):
