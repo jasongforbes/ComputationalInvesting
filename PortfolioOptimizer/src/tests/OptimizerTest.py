@@ -8,15 +8,15 @@ import datetime
 import time
 import unittest
 from numpy     import testing
-from optimizer import PortfolioSimulation as ps
+from portfolio import HistoricalPortfolio as ps
 from optimizer import BruteOptimizer as brute
 from optimizer import SharpeOptimizer as sharpe
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.portfolios = [ps.PortfolioSimulation(['AAPL', 'GLD', 'GOOG', 'XOM'],datetime.date(2011,1,1),datetime.date(2011,12,31)),
-                           ps.PortfolioSimulation(['AXP', 'HPQ', 'IBM', 'HNZ'], datetime.date(2010,1,1), datetime.date(2010,12,30))]
+        self.portfolios = [ps.HistoricalPortfolio(['AAPL', 'GLD', 'GOOG', 'XOM'],datetime.date(2011,1,1),datetime.date(2011,12,31)),
+                           ps.HistoricalPortfolio(['AXP', 'HPQ', 'IBM', 'HNZ'], datetime.date(2010,1,1), datetime.date(2010,12,30))]
         self.brute_results  = [[0.4, 0.4, 0.0, 0.2],
                                [0.0, 0.0, 0.1, 0.9]]
         self.sharpe_results = [[0.42, 0.40, 0.0, 0.18],

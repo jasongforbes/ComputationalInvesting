@@ -11,7 +11,7 @@ import matplotlib.pyplot as plot
 import qstkutil.DataAccess as dataaccess
 import qstkutil.qsdateutil as dateutil
 
-class PortfolioSimulation:
+class HistoricalPortfolio:
     '''
     classdocs
     '''
@@ -50,7 +50,7 @@ class PortfolioSimulation:
     
     def plot_daily_returns(self,allocations,benchmarks):
         daily_earnings = self.get_daily_earnings(allocations)
-        benchmark = PortfolioSimulation(benchmarks, self.start_date, self.end_date)
+        benchmark = HistoricalPortfolio(benchmarks, self.start_date, self.end_date)
         plot.clf()
         plot.plot(numpy.append(benchmark.normalized_close, daily_earnings.reshape(len(benchmark.normalized_close),1) ,axis=1))
         plot.legend((benchmark.symbols,"Portfolio"))

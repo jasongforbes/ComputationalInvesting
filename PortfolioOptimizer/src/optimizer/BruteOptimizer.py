@@ -4,7 +4,7 @@ Created on Oct 4, 2014
 @author: Jason
 '''
 from Optimizer import Optimizer as optimizer_base
-import PortfolioSimulation as ps
+import portfolio as ps
 from sklearn.utils.extmath import cartesian
 import numpy
 

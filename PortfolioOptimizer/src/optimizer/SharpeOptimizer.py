@@ -4,7 +4,7 @@ Created on Oct 5, 2014
 @author: Jason
 '''
 from Optimizer             import Optimizer
-import PortfolioSimulation
+import portfolio as ps
 import numpy
 import cvxpy as cvx
 
@@ -12,11 +12,11 @@ class SharpeOptimizer(Optimizer):
     '''
     classdocs
     '''
-    def __init__(self, PortfolioSimulation):
+    def __init__(self, portfolio):
         '''
         Constructor
         '''
-        self.portfolio = PortfolioSimulation
+        self.portfolio = portfolio
     
     def optimize(self):
         n = len(self.portfolio.symbols)
