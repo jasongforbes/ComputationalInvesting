@@ -4,7 +4,7 @@ Created on Oct 5, 2014
 @author: Jason
 '''
 from Optimizer             import Optimizer
-from PortfolioSimulation   import PortfolioSimulation
+import PortfolioSimulation
 import numpy
 import cvxpy as cvx
 

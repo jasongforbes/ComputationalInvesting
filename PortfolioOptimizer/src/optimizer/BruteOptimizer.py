@@ -3,7 +3,7 @@ Created on Oct 4, 2014
 
 @author: Jason
 '''
-from Optimizer             import Optimizer
+import Optimizer
 from PortfolioSimulation   import PortfolioSimulation
 from sklearn.utils.extmath import cartesian
 import numpy
