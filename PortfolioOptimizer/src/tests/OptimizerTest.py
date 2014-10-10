@@ -3,7 +3,6 @@ Created on Oct 4, 2014
 
 @author: Jason
 '''
-import scs
 import datetime
 import time
 import unittest

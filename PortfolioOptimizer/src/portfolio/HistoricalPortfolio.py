@@ -31,13 +31,13 @@ class HistoricalPortfolio:
         self.normalized_returns = numpy.zeros(self.normalized_close.shape)
         self.normalized_returns[1::,:] = (self.normalized_close[1::,:] / self.normalized_close[0:-1,:]) -1
         self.avg_returns = numpy.average(self.normalized_returns,  axis=0)
-        self.cov_returns = numpy.cov(self.normalized_returns, rowvar=0)
+        self.covariance = numpy.cov(self.normalized_returns, rowvar=0)
         
     def simulate(self,allocations):
         n = self.normalized_returns.shape[0]
         allocations = numpy.array(allocations)
         avg_daily_ret = numpy.dot(self.avg_returns,allocations) 
-        stddev = numpy.sqrt(allocations.T.dot(self.cov_returns.dot(allocations)))
+        stddev = numpy.sqrt(allocations.T.dot(self.covariance.dot(allocations)))
         cum_ret = numpy.cumprod(self.normalized_returns + 1, axis=0).dot(allocations)
         sharpe_ratio  = math.sqrt(n) *avg_daily_ret / stddev
         return(stddev, avg_daily_ret, sharpe_ratio, cum_ret[len(cum_ret)-1])

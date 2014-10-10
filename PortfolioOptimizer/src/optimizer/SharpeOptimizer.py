@@ -3,10 +3,12 @@ Created on Oct 5, 2014
 
 @author: Jason
 '''
+import scs
 from Optimizer             import Optimizer
 import portfolio as ps
 import numpy
 import cvxpy as cvx
+
 
 class SharpeOptimizer(Optimizer):
     '''
@@ -24,7 +26,7 @@ class SharpeOptimizer(Optimizer):
         t = cvx.Variable(1)
         
         objective = cvx.Maximize(x.T * self.portfolio.avg_returns)
-        constraints = [cvx.quad_form(x,self.portfolio.cov_returns) <= 1,
+        constraints = [cvx.quad_form(x,self.portfolio.covariance) <= 1,
                        cvx.sum_entries(x) == t,
                        x <= t,
                        x.T * self.portfolio.avg_returns >= 0,
