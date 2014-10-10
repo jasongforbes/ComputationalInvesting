@@ -14,10 +14,10 @@ class EventStudyTest(unittest.TestCase):
 
     def setUp(self):
         dataobj = da.DataAccess('Yahoo')
-        self.symbols = [dataobj.get_symbols_from_list('sp5002012')]
-        self.function = [{"func": events.price_min_limit, "args": 5.0}]
-        self.testName = ['SP500-2012-PriceMinimumLimit']
-        self.expNumEvents = [180]
+        self.symbols = [dataobj.get_symbols_from_list('sp5002008'),dataobj.get_symbols_from_list('sp5002012')]
+        self.function = [{"func": events.price_min_limit, "args": 7.0},{"func": events.price_min_limit, "args": 9.0}]
+        self.testName = ['SP500-2008-PriceMinimumLimit-7','SP500-2012-PriceMinimumLimit-9']
+        self.expNumEvents = [478,458]
 
 
     def tearDown(self):
