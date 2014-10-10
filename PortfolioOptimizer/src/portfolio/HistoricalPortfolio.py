@@ -13,8 +13,6 @@ class HistoricalPortfolio(hs.HistoricalData):
     '''
     classdocs
     '''
-    keys = ['open', 'high', 'low', 'close', 'volume', 'actual_close']
-    
     def __init__(self, symb_list, start_date, end_date):
         '''
         Constructor
