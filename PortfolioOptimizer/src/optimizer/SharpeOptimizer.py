@@ -4,8 +4,7 @@ Created on Oct 5, 2014
 @author: Jason
 '''
 import scs
-from Optimizer             import Optimizer
-import portfolio as ps
+from Optimizer import Optimizer
 import numpy
 import cvxpy as cvx
 
@@ -37,7 +36,7 @@ class SharpeOptimizer(Optimizer):
         problem.solve(solver=cvx.CVXOPT)     
         if problem.status == cvx.OPTIMAL:
             allocation = numpy.squeeze(numpy.asarray(x.value/t.value))
-            (vol, daily_ret, sharpe_ratio, cum_ret) = self.portfolio.simulate(allocation)
+            sharpe_ratio = self.portfolio.simulate(allocation)[2]
             return (allocation, sharpe_ratio)
         else:
             return (numpy.zeros(n), numpy.nan)

@@ -4,7 +4,6 @@ Created on Oct 4, 2014
 @author: Jason
 '''
 from Optimizer import Optimizer as optimizer_base
-import portfolio as ps
 from sklearn.utils.extmath import cartesian
 import numpy
 
@@ -32,7 +31,7 @@ class BruteOptimizer(optimizer_base):
         allocations = cartesian([steps]*num_symbols)
         legal_allocations = allocations[numpy.where(allocations.sum(1)==1)]
         for allocation in legal_allocations:
-            (vol,daily_ret,sharpe,cum_ret) = self.portfolio.simulate(allocation)
+            sharpe = self.portfolio.simulate(allocation)[2]
             if sharpe > best_sharpe_ratio:
                 best_sharpe_ratio = sharpe
                 best_allocation = allocation
