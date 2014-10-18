@@ -22,7 +22,7 @@ class HistoricalPortfolio(hs.HistoricalData):
     def simulate(self,allocations):
         n = self.normalized_returns().shape[0]
         allocations = numpy.array(allocations)
-        avg_daily_ret = numpy.dot(self.avg_returns,allocations) 
+        avg_daily_ret = allocations.T.dot(self.avg_returns) 
         stddev = numpy.sqrt(allocations.T.dot(self.covariance.dot(allocations)))
         cum_ret = numpy.cumprod(self.normalized_returns() + 1, axis=0).dot(allocations)
         sharpe_ratio  = math.sqrt(n) *avg_daily_ret / stddev

@@ -47,4 +47,4 @@ class HistoricalData(object):
         return normalized_returns
     
     def normalized_close(self):
-        return self.data['close'].values / self.data['close'].values[0,:]
+        return self.data['close'] / self.data['close'].values[0,:]

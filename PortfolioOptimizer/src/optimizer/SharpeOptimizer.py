@@ -24,11 +24,14 @@ class SharpeOptimizer(Optimizer):
         x = cvx.Variable(n)
         t = cvx.Variable(1)
         
-        objective = cvx.Maximize(x.T * self.portfolio.avg_returns)
-        constraints = [cvx.quad_form(x,self.portfolio.covariance) <= 1,
+        Sigma = self.portfolio.covariance
+        R = self.portfolio.avg_returns
+        
+        objective = cvx.Maximize(x.T * R)
+        constraints = [cvx.quad_form(x,Sigma) <= 1,
                        cvx.sum_entries(x) == t,
                        x <= t,
-                       x.T * self.portfolio.avg_returns >= 0,
+                       x.T * R >= 0,
                        x >= 0,
                        t >= 0]
         problem = cvx.Problem(objective,constraints)               
