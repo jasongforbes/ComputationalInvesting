@@ -7,7 +7,7 @@ import unittest
 import datetime
 from portfolio import HistoricalPortfolio as ps
 
-class Test(unittest.TestCase):
+class HistoricalPortfolioTest(unittest.TestCase):
 
 
     def testPortfolioSimulation(self):       
@@ -27,5 +27,5 @@ class Test(unittest.TestCase):
             portfolio.plot_daily_returns(allocations, ['SPY'])
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testOptimize']
+    #import sys;sys.argv = ['', 'HistoricalPortfolioTest.testOptimize']
     unittest.main()
