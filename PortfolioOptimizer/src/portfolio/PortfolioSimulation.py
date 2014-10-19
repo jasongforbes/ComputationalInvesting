@@ -4,11 +4,12 @@ Created on Oct 18, 2014
 @author: Jason
 '''
 from portfolio.HistoricalData import HistoricalData
+from portfolio.Portfolio import Portfolio
 
 import pandas as pd
 import numpy as np
 
-class PortfolioSimulation(HistoricalData):
+class PortfolioSimulation(HistoricalData, Portfolio):
     '''
     classdocs
     '''
@@ -30,10 +31,11 @@ class PortfolioSimulation(HistoricalData):
             self.data['Trades'].loc[trade]=buy_modifier*num_shares
             self.data['Trades']['_CASH'][row_index] = self.data['Trades']['_CASH'][row_index] - buy_modifier*num_shares*cost_per_share
         self.data['Holdings'] = pd.DataFrame(np.cumsum(self.data['Trades'][:].values,axis=0),index=dates,columns=symbs) 
-        self.data['Value'] = pd.DataFrame(np.sum(self.data['Holdings'][self.symbols].values * self.data['close'][self.symbols].values,axis=1)+self.data['Holdings']['_CASH'].values,index=dates, columns=['Value'])
-        self.data['Value']['Year']  = [date.year for date in dates]
-        self.data['Value']['Month'] = [date.month for date in dates]
-        self.data['Value']['Day']   = [date.day for date in dates]
+        self.data['Holdings']['Value'] = np.sum(self.data['Holdings'][self.symbols].values * self.data['close'][self.symbols].values,axis=1)+self.data['Holdings']['_CASH'].values
+        self.data['Holdings']['Year']  = [date.year for date in dates]
+        self.data['Holdings']['Month'] = [date.month for date in dates]
+        self.data['Holdings']['Day']   = [date.day for date in dates]
+        self.__returns = self.data['Holdings']['Value'].values/self.data['Holdings']['Value'].values[0]
 
     def to_csv(self,path):
-        self.data['Value'].to_csv(path_or_buf=path, columns=['Year','Month','Day','Value'],index_label='Date')
+        self.data['Holdings'].to_csv(path_or_buf=path, cols=['Year','Month','Day','Value'],index_label='Date')

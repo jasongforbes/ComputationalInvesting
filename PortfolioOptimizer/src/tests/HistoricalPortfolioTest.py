@@ -14,7 +14,7 @@ class HistoricalPortfolioTest(unittest.TestCase):
         self.ValidatePortfolioSimulation(ps.HistoricalPortfolio(['AAPL', 'GLD', 'GOOG', 'XOM'], datetime.date(2011,1,1), datetime.date(2011,12,31)), 
                                          [0.4, 0.4, 0.0, 0.2], 0.0102094890, 0.0007137812, 1.1098426210, 1.1648726196, True)
         self.ValidatePortfolioSimulation(ps.HistoricalPortfolio(['AXP', 'HPQ', 'IBM', 'HNZ'], datetime.date(2010,1,1), datetime.date(2010,12,30)), 
-                                         [0.0, 0.0, 0.0, 1.0], 0.00924299255937, 0.000756285585593, 1.2937287338, 1.1960583568, True) 
+                                         [0.0, 0.0, 0.0, 1.0], 0.00924299255937, 0.000756285585593, 1.2963033209, 1.1960583568, True) 
 
 
     def ValidatePortfolioSimulation(self, portfolio, allocations, exp_std_dev, exp_avg_daily_ret, exp_sharpe_ratio, exp_cum_ret, bool_plot):

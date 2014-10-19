@@ -8,8 +8,9 @@ import math
 import matplotlib.pyplot as plot
 
 from portfolio import HistoricalData as hs
+from portfolio import Portfolio as pf
 
-class HistoricalPortfolio(hs.HistoricalData):
+class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
     '''
     classdocs
     '''
@@ -18,21 +19,27 @@ class HistoricalPortfolio(hs.HistoricalData):
         Constructor
         '''
         super(HistoricalPortfolio,self).__init__(symb_list, start_date, end_date)
+        self.avg_returns = numpy.average(self.data_returns(),  axis=0)
+        self.covariance  = numpy.cov(self.data_returns(), rowvar=0)   
         
     def simulate(self,allocations):
-        n = self.normalized_returns().shape[0]
-        allocations = numpy.array(allocations)
-        avg_daily_ret = allocations.T.dot(self.avg_returns) 
-        stddev = numpy.sqrt(allocations.T.dot(self.covariance.dot(allocations)))
-        cum_ret = numpy.cumprod(self.normalized_returns() + 1, axis=0).dot(allocations)
-        sharpe_ratio  = math.sqrt(n) *avg_daily_ret / stddev
-        return(stddev, avg_daily_ret, sharpe_ratio, cum_ret[len(cum_ret)-1])
+        self.allocations = numpy.array(allocations)
+        return(self.standard_deviation(), self.average_returns(), self.sharpe_ratio(), self.cumulative_return()[-1])
     
     def get_daily_earnings(self,allocations):
         if len(self.symbols) != len(allocations):
             raise Exception("Length of symb_list and allocations must be equal") 
         earnings = self.normalized_close().dot(allocations)
         return earnings
+    
+    def average_returns(self):
+        return self.avg_returns.dot(self.allocations)
+        
+    def standard_deviation(self):
+        return numpy.sqrt(self.allocations.T.dot(self.covariance.dot(self.allocations)))
+    
+    def cumulative_return(self):
+        return numpy.cumprod(self.data_returns() + 1, axis=0).dot(self.allocations)
     
     def plot_daily_returns(self,allocations,benchmarks):
         daily_earnings = self.get_daily_earnings(allocations)

@@ -31,20 +31,17 @@ class HistoricalData(object):
             self.data[key] = self.data[key].fillna(method = 'bfill')
             self.data[key] = self.data[key].fillna(1.0)
         
-        self.avg_returns = numpy.average(self.normalized_returns(),  axis=0)
-        self.covariance = numpy.cov(self.normalized_returns(), rowvar=0)   
-        
     def normalized_returns(self):
         normalized_close = self.normalized_close()
         normalized_returns = numpy.zeros(normalized_close.shape)
         normalized_returns[1::,:] = (normalized_close[1::,:] / normalized_close[0:-1,:]) -1
         return normalized_returns
     
-    def returns(self):
+    def data_returns(self):
         close = self.data['close'].values
-        normalized_returns = numpy.zeros(close.shape)
-        normalized_returns[1::,:] = (close[1::,:] / close[0:-1,:]) -1
-        return normalized_returns
+        returns = numpy.zeros(close.shape)
+        returns[1::,:] = (close[1::,:] / close[0:-1,:]) -1
+        return returns
     
     def normalized_close(self):
         return self.data['close'].values / self.data['close'].values[0,:]
