@@ -11,7 +11,7 @@ class MarketOrders(object):
     '''
     classdocs
     '''
-    keys = ['Year','Month','Day','Symbols','Order','Number']
+    keys = ['Year','Month','Day','Symbol','Buy','Number']
 
     def __init__(self, csv_filepath):
         '''
@@ -19,6 +19,8 @@ class MarketOrders(object):
         '''
         self.orders=io.read_csv(csv_filepath, header=None, names=self.keys,index_col=False)
         self.orders['Date'] = [dt.date(year,month,day) for (year,month,day) in zip(self.orders['Year'].values,self.orders['Month'].values,self.orders['Day'].values)]
+        self.orders['Buy'].replace(to_replace='Buy',  value=1,  inplace=True)
+        self.orders['Buy'].replace(to_replace='Sell', value=-1, inplace=True)
         
     def start_date(self):
         return np.min(self.orders['Date'].values)
@@ -27,4 +29,4 @@ class MarketOrders(object):
         return np.max(self.orders['Date'].values)
     
     def symbols(self):
-        return list(set(self.orders['Symbols'].values))
+        return list(set(self.orders['Symbol'].values))
