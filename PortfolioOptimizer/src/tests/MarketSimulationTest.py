@@ -40,7 +40,7 @@ class MarketSimulationTest(unittest.TestCase):
          for csvfile, outputcsv, startdate, enddate, symb in self.test_data:
             orders = mo.MarketOrders(csvfile)
             portfolio = ps.PortfolioSimulation(orders,1000000)
-            az.PortfolioAnalyzer().analyze(portfolio,'SPY')
+            az.PortfolioAnalyzer().analyze(portfolio,'$SPX')
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'MarketSimulationTest.testLoadingCsv']

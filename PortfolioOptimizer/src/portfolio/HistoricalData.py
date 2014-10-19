@@ -35,7 +35,7 @@ class HistoricalData(object):
             self.data[key] = self.data[key].fillna(method = 'bfill')
             self.data[key] = self.data[key].fillna(1.0)
             
-        self.data['returns'] =(self.data['close'][:][1::] / self.data['close'].values[0:-1]) -1
+        self.data['returns'].iloc[1::,:] =(self.data['close'][:][1::] / self.data['close'].values[0:-1]) -1
         
     def normalized_returns(self):
         normalized_close = self.normalized_close()

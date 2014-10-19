@@ -6,6 +6,7 @@ Created on Oct 3, 2014
 import numpy
 import pandas
 import math
+from utils import transforms as tf
 import matplotlib.pyplot as plot
 
 from portfolio import HistoricalData as hs
@@ -25,8 +26,9 @@ class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
         self.covariance  = numpy.cov(self.data['returns'], rowvar=0)   
         
     def simulate(self,allocations=1):
-        self.allocations = numpy.array(allocations)
-        self.data['value'] = self.data['close'].dot(allocations)
+        self.allocations = numpy.array(tf.wrap(allocations,list))
+        self.data['cumret'] = numpy.cumprod(self.data['returns']+1,axis=0)
+        self.data['value'] = self.data['cumret'].dot(self.allocations)
         returns = numpy.zeros(self.data['value'].values.size)
         returns[1::] = self.data['value'].values[1::]/self.data['value'].values[0:-1] - 1
         self.set_returns( pandas.DataFrame(returns, index=self.timestamps))
@@ -37,13 +39,13 @@ class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
             raise Exception("Length of symb_list and allocations must be equal") 
         earnings = self.normalized_close().dot(allocations)
         return earnings
-    
+    '''
     def average_returns(self):
         return self.avg_returns.dot(self.allocations)
         
     def standard_deviation(self):
         return numpy.sqrt(self.allocations.T.dot(self.covariance.dot(self.allocations)))
-    
+    '''
     def plot_daily_returns(self,allocations,benchmarks):
         daily_earnings = self.get_daily_earnings(allocations)
         benchmark = HistoricalPortfolio(benchmarks, self.start_date, self.end_date)
