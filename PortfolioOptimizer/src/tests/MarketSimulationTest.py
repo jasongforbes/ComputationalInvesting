@@ -5,6 +5,7 @@ Created on Oct 18, 2014
 '''
 import unittest
 import datetime as dt
+from portfolio import PortfolioAnalyzer as az
 from portfolio import MarketOrders as mo
 from portfolio import PortfolioSimulation as ps
 
@@ -34,6 +35,11 @@ class MarketSimulationTest(unittest.TestCase):
             portfolio = ps.PortfolioSimulation(orders,1000000)
             portfolio.to_csv(outputcsv)
 
+    def testPortfolioAnalyzer(self):
+         for csvfile, outputcsv, startdate, enddate, symb in self.test_data:
+            orders = mo.MarketOrders(csvfile)
+            portfolio = ps.PortfolioSimulation(orders,1000000)
+            az.PortfolioAnalyzer().analyze(portfolio,'SPY')
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'MarketSimulationTest.testLoadingCsv']

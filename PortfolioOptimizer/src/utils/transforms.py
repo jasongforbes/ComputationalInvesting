@@ -13,7 +13,7 @@ def wrap(src,classinfo):
     '''
     if not isinstance(src, classinfo):
         returnval = classinfo()
-        returnval.append(src.copy())
+        returnval.append(src)
         return returnval
     else:
         return src

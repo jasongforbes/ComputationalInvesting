@@ -5,6 +5,7 @@ Created on Oct 10, 2014
 '''
 import datetime
 import numpy
+from utils import transforms as tf
 
 import qstkutil.DataAccess as dataaccess
 import qstkutil.qsdateutil as dateutil
@@ -22,7 +23,7 @@ class HistoricalData(object):
         database = dataaccess.DataAccess('Yahoo')
         self.start_date = start_date
         self.end_date = end_date
-        self.symbols = symb_list
+        self.symbols = tf.wrap(symb_list,list)
         self.timestamps =  timestamps = dateutil.getNYSEdays(start_date, end_date, datetime.timedelta(hours=16))
         self.data = dict(zip(self.keys,database.get_data(timestamps, self.symbols, self.keys)))
         

@@ -18,7 +18,8 @@ class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
         '''
         Constructor
         '''
-        super(HistoricalPortfolio,self).__init__(symb_list, start_date, end_date)
+        hs.HistoricalData.__init__(self, symb_list, start_date, end_date)
+        pf.Portfolio.__init__(self, start_date, end_date)
         self.avg_returns = numpy.average(self.data_returns(),  axis=0)
         self.covariance  = numpy.cov(self.data_returns(), rowvar=0)   
         

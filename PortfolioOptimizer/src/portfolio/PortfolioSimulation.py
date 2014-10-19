@@ -18,7 +18,8 @@ class PortfolioSimulation(HistoricalData, Portfolio):
         '''
         Constructor
         '''
-        super(PortfolioSimulation,self).__init__(MarketOrders.symbols(), MarketOrders.start_date(), MarketOrders.end_date())
+        HistoricalData.__init__(self,MarketOrders.symbols(), MarketOrders.start_date(), MarketOrders.end_date())
+        Portfolio.__init__(self,MarketOrders.start_date(), MarketOrders.end_date())
         symbs = self.symbols + ['_CASH']
         dates = list(sorted(set([timestamp.date() for timestamp in self.timestamps])))
         self.data['Trades'] = pd.DataFrame(0,index=dates,columns=symbs)
@@ -35,7 +36,9 @@ class PortfolioSimulation(HistoricalData, Portfolio):
         self.data['Holdings']['Year']  = [date.year for date in dates]
         self.data['Holdings']['Month'] = [date.month for date in dates]
         self.data['Holdings']['Day']   = [date.day for date in dates]
-        self.__returns = self.data['Holdings']['Value'].values/self.data['Holdings']['Value'].values[0]
+        returns = np.zeros(self.data['Holdings']['Value'].values.size)
+        returns[1::] = self.data['Holdings']['Value'].values[1::]/self.data['Holdings']['Value'].values[0:-1] - 1
+        self.set_returns( pd.DataFrame(returns, index=self.timestamps))
 
     def to_csv(self,path):
         self.data['Holdings'].to_csv(path_or_buf=path, cols=['Year','Month','Day','Value'],index_label='Date')
