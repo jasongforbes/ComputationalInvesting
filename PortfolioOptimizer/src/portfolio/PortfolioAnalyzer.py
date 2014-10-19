@@ -3,7 +3,6 @@ Created on Oct 19, 2014
 
 @author: Jason
 '''
-import datetime as dt
 import HistoricalPortfolio as hp
 
 class PortfolioAnalyzer(object):

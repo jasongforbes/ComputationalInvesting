@@ -5,7 +5,6 @@ Created on Oct 19, 2014
 '''
 
 import numpy as np
-import pandas as pd
 
 class Portfolio(object):
     '''
