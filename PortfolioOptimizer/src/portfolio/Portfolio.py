@@ -28,6 +28,9 @@ class Portfolio(object):
     
     def set_returns(self, returns):
         self.__returns = returns
+        
+    def get_returns(self):
+        return self.__returns
     
     def average_returns(self):
         return np.average(self.__returns.values)

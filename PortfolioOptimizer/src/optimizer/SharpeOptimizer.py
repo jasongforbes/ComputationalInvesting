@@ -3,7 +3,7 @@ Created on Oct 5, 2014
 
 @author: Jason
 '''
-import scs
+import scs #needed to avoid memory error on shutdown
 from Optimizer import Optimizer
 import numpy
 import cvxpy as cvx
