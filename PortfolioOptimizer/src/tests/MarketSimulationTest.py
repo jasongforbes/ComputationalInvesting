@@ -15,7 +15,8 @@ class MarketSimulationTest(unittest.TestCase):
     def setUp(self):
         '''                   csv_files                                    output                    start-date         end-date                 symbols               '''
         self.test_data = [('../../Resources/orders.csv',       '../../Resources/output.csv',       dt.date(2011,1,10), dt.date(2011,12,20), ['AAPL','IBM','GOOG','XOM']), \
-                          ('../../Resources/orders-short.csv', '../../Resources/output-short.csv', dt.date(2011,1,5),  dt.date(2011,1,20),  ['AAPL']) \
+                          ('../../Resources/orders-short.csv', '../../Resources/output-short.csv', dt.date(2011,1,5),  dt.date(2011,1,20),  ['AAPL']), \
+                          ('../../Resources/orders2.csv',       '../../Resources/output2.csv',     dt.date(2011,1,14), dt.date(2011,12,14), ['AAPL','IBM','GOOG','XOM']) \
                           ]
 
 

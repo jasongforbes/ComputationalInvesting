@@ -3,7 +3,7 @@ Created on Oct 19, 2014
 
 @author: Jason
 '''
-
+import datetime as dt
 import HistoricalPortfolio as hp
 
 class PortfolioAnalyzer(object):
@@ -19,7 +19,7 @@ class PortfolioAnalyzer(object):
     
     def analyze(self,portfolio,benchmark,name="",):
         bench = hp.HistoricalPortfolio(benchmark,portfolio.get_startdate(), portfolio.get_enddate())
-        bench.simulate([1])
+        bench.simulate()
         column_width=18
         print name
         print "                       {0:>{2}}    {1:>{2}}".format("Portfolio",                          "Benchmark",                  column_width)

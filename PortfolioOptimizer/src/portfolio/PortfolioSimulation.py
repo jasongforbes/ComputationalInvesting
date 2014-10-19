@@ -24,13 +24,13 @@ class PortfolioSimulation(HistoricalData, Portfolio):
         dates = list(sorted(set([timestamp.date() for timestamp in self.timestamps])))
         self.data['Trades'] = pd.DataFrame(0,index=dates,columns=symbs)
         self.data['Trades']['_CASH'][self.start_date]=starting_cash
-        for order_index, trade in enumerate(zip(MarketOrders.orders.loc[:,'Date'],MarketOrders.orders.loc[:,'Symbol'])):
+        for order_index, trade in enumerate(zip(MarketOrders.orders['Date'],MarketOrders.orders['Symbol'])):
             buy_modifier = MarketOrders.orders['Buy'][order_index]                #-1 for sell, 1 for buy
             num_shares   = MarketOrders.orders['Number'][order_index]             #number of shares to buy/sell
             row_index = self.data['Trades'].index.get_loc(trade[0])
             cost_per_share = self.data['close'][trade[1]][row_index]       #cost of transaction
-            self.data['Trades'].loc[trade]=buy_modifier*num_shares
-            self.data['Trades']['_CASH'][row_index] = self.data['Trades']['_CASH'][row_index] - buy_modifier*num_shares*cost_per_share
+            self.data['Trades'].loc[trade]+=buy_modifier*num_shares
+            self.data['Trades']['_CASH'][row_index] -=  buy_modifier*num_shares*cost_per_share
         self.data['Holdings'] = pd.DataFrame(np.cumsum(self.data['Trades'][:].values,axis=0),index=dates,columns=symbs) 
         self.data['Holdings']['Value'] = np.sum(self.data['Holdings'][self.symbols].values * self.data['close'][self.symbols].values,axis=1)+self.data['Holdings']['_CASH'].values
         self.data['Holdings']['Year']  = [date.year for date in dates]

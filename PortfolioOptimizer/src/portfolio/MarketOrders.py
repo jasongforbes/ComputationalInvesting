@@ -21,6 +21,7 @@ class MarketOrders(object):
         self.orders['Date'] = [dt.date(year,month,day) for (year,month,day) in zip(self.orders['Year'].values,self.orders['Month'].values,self.orders['Day'].values)]
         self.orders['Buy'].replace(to_replace='Buy',  value=1,  inplace=True)
         self.orders['Buy'].replace(to_replace='Sell', value=-1, inplace=True)
+
         
     def start_date(self):
         return np.min(self.orders['Date'].values)

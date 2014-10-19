@@ -4,6 +4,7 @@ Created on Oct 3, 2014
 @author: Jason
 '''
 import numpy
+import pandas
 import math
 import matplotlib.pyplot as plot
 
@@ -20,11 +21,15 @@ class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
         '''
         hs.HistoricalData.__init__(self, symb_list, start_date, end_date)
         pf.Portfolio.__init__(self, start_date, end_date)
-        self.avg_returns = numpy.average(self.data_returns(),  axis=0)
-        self.covariance  = numpy.cov(self.data_returns(), rowvar=0)   
+        self.avg_returns = numpy.average(self.data['returns'],  axis=0)
+        self.covariance  = numpy.cov(self.data['returns'], rowvar=0)   
         
-    def simulate(self,allocations):
+    def simulate(self,allocations=1):
         self.allocations = numpy.array(allocations)
+        self.data['value'] = self.data['close'].dot(allocations)
+        returns = numpy.zeros(self.data['value'].values.size)
+        returns[1::] = self.data['value'].values[1::]/self.data['value'].values[0:-1] - 1
+        self.set_returns( pandas.DataFrame(returns, index=self.timestamps))
         return(self.standard_deviation(), self.average_returns(), self.sharpe_ratio(), self.cumulative_return()[-1])
     
     def get_daily_earnings(self,allocations):
@@ -38,9 +43,6 @@ class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
         
     def standard_deviation(self):
         return numpy.sqrt(self.allocations.T.dot(self.covariance.dot(self.allocations)))
-    
-    def cumulative_return(self):
-        return numpy.cumprod(self.data_returns() + 1, axis=0).dot(self.allocations)
     
     def plot_daily_returns(self,allocations,benchmarks):
         daily_earnings = self.get_daily_earnings(allocations)
