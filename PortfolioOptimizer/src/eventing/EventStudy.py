@@ -21,7 +21,7 @@ class EventStudy(object):
     classdocs
     '''
 
-    def __init__(self, symbols, benchmark, start_date, end_date, event_functions, event_window = []):
+    def __init__(self, symbols, start_date, end_date, event_functions, benchmark=None, event_window = []):
         '''
         Constructor
         event_functions is a list of dictionaries, where each entry defines:
@@ -33,7 +33,8 @@ class EventStudy(object):
         '''
         self.symbols = symbols
         self.benchmark = benchmark
-        symbols.append(benchmark)
+        if benchmark:
+            symbols.append(benchmark)
         self.histdata = hs.HistoricalData(symbols,start_date,end_date)
         self.event_matrix = self.histdata.data['close'] * numpy.NaN      
         event_functions = tf.wrap(event_functions, list)
@@ -49,7 +50,7 @@ class EventStudy(object):
         #normalize to benchmark
         benchmark_index = self.histdata.symbols.index(self.benchmark)
         
-        returns = self.histdata.returns()
+        returns = self.histdata.data['returns'].values
         returns = (returns.T - returns.T[benchmark_index]).T
         returns = numpy.delete(returns,benchmark_index,1)
                 
