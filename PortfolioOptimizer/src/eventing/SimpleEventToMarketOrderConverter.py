@@ -25,7 +25,7 @@ class SimpleEventToMarketOrderConverter(object):
         holding_time.extend([eventStudy.histdata.timestamps[-1]]*hold_time.days)
         (sell_orders,sell_timestamps) = self._initialize_event_orders(holding_time,'Sell')
         
-        self.event_list = pd.concat([buy_orders, sell_orders])
+        self.event_list = pd.concat([buy_orders, sell_orders],ignore_index=True)
         self.dates = buy_timestamps.tolist()
         self.dates.extend(sell_timestamps.tolist())
         
@@ -41,7 +41,7 @@ class SimpleEventToMarketOrderConverter(object):
         pass
     
     def get_market_orders(self):
-        return MarketOrders(self.event_list)
+        return MarketOrders(dataframe=self.event_list)
     
     def _initialize_event_orders(self,timestamps,order_type):
         symb_matrix  = mth.cartesian([np.array(timestamps),self.event_matrix.columns.values])

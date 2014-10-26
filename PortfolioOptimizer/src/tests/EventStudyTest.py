@@ -9,6 +9,8 @@ from eventing  import EventStudy as es
 from eventing  import events
 from qstkutil  import DataAccess as da
 from eventing.SimpleEventToMarketOrderConverter import SimpleEventToMarketOrderConverter
+from portfolio.PortfolioSimulation import PortfolioSimulation
+from portfolio.PortfolioAnalyzer import PortfolioAnalyzer
 
 class EventStudyTest(unittest.TestCase):
 
@@ -35,9 +37,16 @@ class EventStudyTest(unittest.TestCase):
             
     def testToOrderCsv(self):
         for index in range(0, len(self.testName)):
+            print "\nTesting {0} strategy".format(self.testName[index])  
             study = es.EventStudy(self.symbols[index],start_date=self.startDate[index], end_date=self.endDate[index], event_functions=self.function[index])
             converter = SimpleEventToMarketOrderConverter(study, 100, dt.timedelta(days=5))
+            print "Generating csv of orders...."
             converter.to_csv("../../Resources/" + self.testName[index] + ".csv")
+            print "Simulating portfolio...."
+            portfolio_sim = PortfolioSimulation(converter.get_market_orders(),50000)
+            print "Analyzing portfolio...."
+            analyzer = PortfolioAnalyzer()
+            analyzer.analyze(portfolio_sim, "$SPX", self.testName[index])
               
 
     def ValidateEvent(self, test_name, event, expected_num_events):

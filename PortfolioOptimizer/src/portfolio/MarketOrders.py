@@ -19,9 +19,9 @@ class MarketOrders(object):
         '''
         if csv_filepath:
             self.orders=io.read_csv(csv_filepath, header=None, names=self.keys,index_col=False)
-        elif dataframe:
-            if self.keys in dataframe:
-                self.orders[self.keys] = dataframe[self.keys]
+        elif dataframe is not None:
+            if set(self.keys) == set(dataframe.columns.values):
+                self.orders = dataframe[self.keys].copy()
             else:
                 raise Exception("The following keys must be present in dataframe - {0}".format(self.keys))
             pass
