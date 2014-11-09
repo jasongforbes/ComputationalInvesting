@@ -40,3 +40,12 @@ class MarketOrders(object):
     
     def symbols(self):
         return list(set(self.orders['Symbol'].values))
+    
+    def get_dates(self):
+        return self.orders['Date']
+
+    def get_symbols(self):
+        return self.orders['Symbol']
+    
+    def get_purchase_order(self):
+        return self.orders['Number']*self.orders['Buy']

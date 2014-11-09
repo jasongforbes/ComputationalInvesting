@@ -36,7 +36,7 @@ class EventStudy(object):
         if benchmark:
             symbols.append(benchmark)
         self.histdata = hs.HistoricalData(symbols,start_date,end_date)
-        self.event_matrix = self.histdata.data['close'] * numpy.NaN      
+        self.event_matrix = self.histdata.get_close()* numpy.NaN      
         event_functions = tf.wrap(event_functions, list)
         for event_function in event_functions: 
             self.event_matrix = self.event_matrix.combine_first( event_function['func'](self.histdata,event_function['args']) )
@@ -48,9 +48,9 @@ class EventStudy(object):
         assert event_window[1] >= event_window[0], "event_windwo[1] must be > event_windw[0]"
         events = self.event_matrix.copy()
         #normalize to benchmark
-        benchmark_index = self.histdata.symbols.index(self.benchmark)
+        benchmark_index = self.histdata.get_symbols().index(self.benchmark)
         
-        returns = self.histdata.data['returns'].values
+        returns = self.histdata.get_returns().values
         returns = (returns.T - returns.T[benchmark_index]).T
         returns = numpy.delete(returns,benchmark_index,1)
                 

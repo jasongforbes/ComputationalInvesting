@@ -22,16 +22,16 @@ class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
         '''
         hs.HistoricalData.__init__(self, symb_list, start_date, end_date)
         pf.Portfolio.__init__(self, start_date, end_date)
-        self.avg_returns = numpy.average(self.data['returns'],  axis=0)
-        self.covariance  = numpy.cov(self.data['returns'], rowvar=0)   
+        self.avg_returns = numpy.average(self.get_returns(),  axis=0)
+        self.covariance  = numpy.cov(self.get_returns(), rowvar=0)   
         
     def simulate(self,allocations=1):
         self.allocations = numpy.array(tf.wrap(allocations,list))
-        self.data['cumret'] = numpy.cumprod(self.data['returns']+1,axis=0)
-        self.data['value'] = self.data['cumret'].dot(self.allocations)
+        self.data['cumret'] = numpy.cumprod(self.get_returns()+1,axis=0)
+        self.data['value'] = self.data['cumret'].dot(self.allocations.T)
         returns = numpy.zeros(self.data['value'].values.size)
-        returns[1::] = self.data['value'].values[1::]/self.data['value'].values[0:-1] - 1
-        self.set_returns( pandas.DataFrame(returns, index=self.timestamps))
+        returns[1::] = self.data['value'].values[1::].T/self.data['value'].values[0:-1].T - 1
+        self.set_returns( pandas.DataFrame(returns, index=self.get_timestamps()))
         return(self.standard_deviation(), self.average_returns(), self.sharpe_ratio(), self.cumulative_return()[-1])
     
     def get_daily_earnings(self,allocations):
@@ -39,16 +39,19 @@ class HistoricalPortfolio(hs.HistoricalData, pf.Portfolio ):
             raise Exception("Length of symb_list and allocations must be equal") 
         earnings = self.normalized_close().dot(allocations)
         return earnings
-    '''
-    def average_returns(self):
-        return self.avg_returns.dot(self.allocations)
-        
-    def standard_deviation(self):
-        return numpy.sqrt(self.allocations.T.dot(self.covariance.dot(self.allocations)))
-    '''
+    
+    def get_portfolio_value(self):
+        return self.data['value']
+    
+    def get_cumulative_returns(self):
+        return self.data['cumret']
+    
+    def get_covariance(self):
+        return self.covariance
+
     def plot_daily_returns(self,allocations,benchmarks):
         daily_earnings = self.get_daily_earnings(allocations)
-        benchmark = HistoricalPortfolio(benchmarks, self.start_date, self.end_date)
+        benchmark = HistoricalPortfolio(benchmarks, self.get_startdate(), self.get_enddate())
         plot.clf()
         plot.plot(numpy.append(benchmark.normalized_close(), daily_earnings.reshape(len(benchmark.normalized_close()),1) ,axis=1))
         plot.legend((benchmark.symbols,"Portfolio"))

@@ -21,7 +21,7 @@ class SimpleEventToMarketOrderConverter(object):
         self.order_amont  = order_amount
         self.hold_time    = hold_time
         (buy_orders,buy_timestamps) = self._initialize_event_orders(eventStudy.histdata.timestamps,'Buy')
-        holding_time = eventStudy.histdata.timestamps[hold_time.days::]
+        holding_time = eventStudy.histdata.get_timestamps()[hold_time.days::]
         holding_time.extend([eventStudy.histdata.timestamps[-1]]*hold_time.days)
         (sell_orders,sell_timestamps) = self._initialize_event_orders(holding_time,'Sell')
         

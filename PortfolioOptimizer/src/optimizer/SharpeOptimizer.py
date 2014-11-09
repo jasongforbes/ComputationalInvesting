@@ -20,12 +20,12 @@ class SharpeOptimizer(Optimizer):
         self.portfolio = portfolio
     
     def optimize(self):
-        n = len(self.portfolio.symbols)
+        n = len(self.portfolio.get_symbols())
         x = cvx.Variable(n)
         t = cvx.Variable(1)
         
-        Sigma = self.portfolio.covariance
-        R = self.portfolio.avg_returns
+        Sigma = self.portfolio.get_covariance()
+        R = numpy.average(self.portfolio.get_returns().values,axis=0)
         
         objective = cvx.Maximize(x.T * R)
         constraints = [cvx.quad_form(x,Sigma) <= 1,

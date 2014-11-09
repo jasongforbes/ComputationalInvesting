@@ -43,5 +43,38 @@ class HistoricalData(object):
         normalized_returns[1::,:] = (normalized_close[1::,:] / normalized_close[0:-1,:]) -1
         return normalized_returns
     
+    def get_startdate(self):
+        return self.start_date
+    
+    def get_enddate(self):
+        return self.end_date
+    
+    def get_symbols(self):
+        return self.symbols
+    
+    def get_timestamps(self):
+        return self.timestamps
+    
+    def get_returns(self):
+        return self.data['returns']
+    
+    def get_close(self):
+        return self.data['close']
+    
+    def get_actual_clos(self):
+        return self.data['actual_close']
+    
+    def get_high(self):
+        return self.data['high']
+    
+    def get_low(self):
+        return self.data['low']
+    
+    def open(self):
+        return self.data['open']
+    
+    def volume(self):
+        return self.data['volume']
+    
     def normalized_close(self):
         return self.data['close'].values / self.data['close'].values[0,:]

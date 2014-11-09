@@ -26,7 +26,7 @@ class BruteOptimizer(optimizer_base):
     def optimize(self):
         best_sharpe_ratio = 0
         best_allocation = []
-        num_symbols = len(self.portfolio.symbols)
+        num_symbols = len(self.portfolio.get_symbols())
         steps = numpy.linspace(0, 1, 1/self.stepsize + 1)
         allocations = cartesian([steps]*num_symbols)
         legal_allocations = allocations[numpy.where(allocations.sum(1)==1)]
